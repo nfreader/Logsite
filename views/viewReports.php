@@ -1,5 +1,5 @@
 <?php 
-$site = new site();
+$site = new Logsite\site();
 $limit = 30;
 $totalreports = $site->countRows('ls_reports');
 $pages = ceil($totalreports/$limit);

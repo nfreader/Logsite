@@ -7,7 +7,7 @@ if ((isset($_POST['contactType']))) {
     $perma = true;
   }
 
-  $contact = new contact();
+  $contact = new Logsite\contact();
   $contact->newReport($_GET['player'],$_POST['contactType'],$_POST['notes'],
   $perma);
 }

@@ -5,8 +5,7 @@ if ((isset($_POST['contactType']))) {
   } elseif (isset($_POST['permanent'])) {
     $perma = true;
   }
-print_r($_POST);
-  $contact = new contact();
+  $contact = new Logsite\contact();
   $contact->newReport($_POST['player'],$_POST['contactType'],$_POST['notes'],
   $perma);
   include 'home.php';

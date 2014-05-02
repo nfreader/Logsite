@@ -3,7 +3,7 @@
 if(empty($_GET['report'])) {
   include 'home.php';
 } else {
-  $site = new site();
+  $site = new Logsite\site();
   $report = $site->viewReport($_GET['report']);
   if ((isset($_POST['comment'])) && ($user->isLoggedIn())) {
     $site->addReportComment($_POST['comment'], $report->eventid);

@@ -3,7 +3,7 @@
     $meta = array();
     $meta['IP'] = $_POST['ip'];
     $meta['email'] = $_POST['email'];
-    $player = new player();
+    $player = new Logsite\player();
     $player->addNewPlayer($_POST['player']);
     $playerid = $player->getId($_POST['player']);
     $player->addPlayerMeta($playerid, $meta);

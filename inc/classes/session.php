@@ -1,8 +1,10 @@
 <?php
 
+namespace Logsite;
+
 //define('TBL_PREFIX','ls_');
 
-class session implements SessionHandlerInterface {
+class session implements \SessionHandlerInterface {
 
     public function __construct() {
       session_set_save_handler(
@@ -41,7 +43,7 @@ class session implements SessionHandlerInterface {
         global $dbh;
         $sess = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
         if ($sess->execute(array(':id'=>$id))) {
-          $result = $sess->fetch(PDO::FETCH_ASSOC);
+          $result = $sess->fetch(\PDO::FETCH_ASSOC);
           return $result["session_data"];
         }
         return '';

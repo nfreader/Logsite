@@ -1,4 +1,8 @@
-<?php class site {
+<?php
+
+namespace Logsite;
+
+class site {
   
   /**
   * Salt generator

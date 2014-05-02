@@ -34,4 +34,5 @@ require_once('db.php');
 require_once('autoload.php');
 require_once('arrays.php');
 require_once('functions.php');
+require_once('vendor/autoload.php');
 

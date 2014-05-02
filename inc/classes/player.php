@@ -1,4 +1,10 @@
-<?php class player {
+<?php
+
+namespace Logsite;
+
+use HipChat\HipChat as Hipchat;
+
+class player {
 
   public function addNewPlayer($names) {
     $sql = "INSERT INTO ls_players
@@ -8,7 +14,9 @@
     $player = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
 
     //TODO: Make $names into an array by default
-    $hc = new HipChat(HIPCHAT_TOKEN);
+    
+
+
     if (is_array($names)) {
       $i = 0;
       foreach($names as $name) {
@@ -23,8 +31,11 @@
         
       $site = new site();
       $site->logEvent("BA","Bulk added $i players");
-
-      $hc->message_room(HIPCHAT_ROOM, SITE_NAME, $_SESSION['username']." bulk added $i players", false, 'gray');
+      
+      if (constant('HIPCHAT_TOKEN')) {
+        $hc = new HipChat(HIPCHAT_TOKEN);
+        $hc->message_room(HIPCHAT_ROOM, SITE_NAME, $_SESSION['username']." bulk added $i players", false, 'gray');
+      }
       return $i;
 
     } else {
@@ -32,7 +43,10 @@
         ':name'=>$names
       ));
       echo "<div class='alert alert-success'>Added ".$names."</div>";
-      $hc->message_room(HIPCHAT_ROOM, SITE_NAME, $_SESSION['username']." added ".$names, false, 'gray');
+      if (constant('HIPCHAT_TOKEN')) {
+        $hc = new HipChat(HIPCHAT_TOKEN);
+        $hc->message_room(HIPCHAT_ROOM, SITE_NAME, $_SESSION['username']." added ".$names, false, 'gray');
+      }
     }
   }
   public function countPlayers() {

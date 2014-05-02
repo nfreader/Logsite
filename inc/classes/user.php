@@ -1,4 +1,8 @@
-<?php class user {
+<?php
+
+namespace Logsite;
+
+class user {
 
   public function isLoggedIn() {
     if ((isset($_SESSION['username'])) && (isset($_SESSION['userid']))) {

@@ -2,7 +2,7 @@
   <div class="col-md-6">
 <?php
 $players = $player->countPlayers();
-$site = new site();
+$site = new Logsite\site();
 $stats = $site->getSiteStats();
 $totalReports = 0;
 foreach ($stats as $stat) {
@@ -39,7 +39,6 @@ foreach ($stats as $stat) {
           <div class="col-md-6">
             <h2>Recent Reports</h2>
                <?php
-                $site = new site();
                 $recent = 5;
                 $reports = $site->viewReports(0,$recent);
                 reportTable($reports);

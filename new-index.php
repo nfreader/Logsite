@@ -2,18 +2,18 @@
 
 require_once('inc/config.php');
 
-$session = new session();
+$session = new Logsite\session();
 session_set_save_handler($session, true);
 
-$user = new user();
-$player = new player();
+$user = new Logsite\user();
+$player = new Logsite\player();
 
 require_once('header.php');
 
 //echo showColors();
 if (constant('HIPCHAT_TOKEN')) {
-  $hc = new HipChat/HipChat(HIPCHAT_TOKEN);
-  $hc->message_room(SITE_NAME, "Test Message", false, 'green');
+  $hc = new HipChat\HipChat(HIPCHAT_TOKEN);
+  $hc->message_room(HIPCHAT_ROOM,SITE_NAME, "Test Message", false, 'green');
 } else {
   echo "HipChat not enabled";
 }

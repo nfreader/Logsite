@@ -2,11 +2,11 @@
 
 require_once('inc/config.php');
 
-$session = new session();
+$session = new Logsite\session();
 session_set_save_handler($session, true);
 
-$user = new user();
-$player = new player();
+$user = new Logsite\user();
+$player = new Logsite\player();
 
 require_once('header.php');
 if (isset($_GET['action'])) { //User is trying to log in

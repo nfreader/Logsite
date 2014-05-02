@@ -50,7 +50,7 @@ function tableHeader($columns) {
 }
 
 function nameFormatter($name) {
-  $user = new user();
+  $user = new Logsite\user();
   $user = $user->getUserProfile($name);
   switch($user->rank) {
     default:
