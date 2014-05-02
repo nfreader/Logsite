@@ -14,10 +14,7 @@ class player {
     $player = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
 
     //TODO: Make $names into an array by default
-    
-
-
-    if (is_array($names)) {
+   if (is_array($names)) {
       $i = 0;
       foreach($names as $name) {
           try {
@@ -132,7 +129,6 @@ class player {
 
   public function getPlayerReports($player,$offset=0,$limit=30) {
     $sql = "SELECT ls_reports.*,
-    ls_players.*,
     ls_user.username,
     ls_reports.id AS reportid,
     ls_user.email,
@@ -140,11 +136,14 @@ class player {
     ls_reports.timestamp AS date,
     CASE WHEN ls_reports.perma = 1
               THEN 'P'
-              ELSE ls_reports.type END AS type
+              ELSE ls_reports.type END AS type,
+    SUM(IF(ls_reportcomments.report = ls_reports.eventid, 1, 0)) AS comments
     FROM ls_reports
     LEFT JOIN ls_players ON ls_reports.player = ls_players.id
     LEFT JOIN ls_user ON ls_reports.user = ls_user.id
-    WHERE ls_players.id = :player
+    LEFT JOIN ls_reportcomments ON ls_reports.eventid = ls_reportcomments.report
+    WHERE ls_reports.player = :player
+    GROUP BY ls_reportcomments.report, ls_reports.eventid
     ORDER BY ls_reports.timestamp DESC
     LIMIT $offset, $limit";
 
@@ -152,6 +151,28 @@ class player {
     $reports = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
     $reports->execute(array(':player'=>$player));
     return $reports->fetchAll();
+  }
+
+    public function contactPlayer($player) {
+    $sql = "UPDATE ls_players SET status = :status, lastupdated = NOW() WHERE ls_players.id = :player";
+    global $dbh;
+    $ban = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+    $ban->execute(array(
+      ':status'=>('C'),
+      ':player'=>$player
+    ));
+    echo "<div class='alert alert-success'>Player is in good standing</div>";
+  }
+
+    public function warnPlayer($player) {
+    $sql = "UPDATE ls_players SET status = :status, lastupdated = NOW() WHERE ls_players.id = :player";
+    global $dbh;
+    $ban = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+    $ban->execute(array(
+      ':status'=>('W'),
+      ':player'=>$player
+    ));
+    echo "<div class='alert alert-warning'>Player is on notice</div>";
   }
 
   public function banPlayer($player,$perma) {
@@ -180,6 +201,24 @@ class player {
         ':player'=>$player
       ));
     }
+  }
+
+  public function listPlayers() {
+    $sql = "SELECT ls_players.name,
+            ls_players.id,
+            ls_players.status,
+            SUM(IF(ls_reports.type = 'C', 1, 0)) AS contacted,
+            SUM(IF(ls_reports.type = 'W', 1, 0)) AS warned,
+            SUM(IF(ls_reports.type = 'B', 1, 0)) - (SUM(IF(ls_reports.perma = 1, 1, 0))) AS banned,
+            SUM(IF(ls_reports.perma = 1, 1, 0)) AS perma,
+            COUNT(ls_reports.type) AS reports
+            FROM ls_players
+            LEFT JOIN ls_reports ON ls_reports.player = ls_players.id
+            GROUP BY ls_players.id";
+    global $dbh;
+    $listAll = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+    $listAll->execute();
+    return $listAll->fetchAll();
   }
 
 }

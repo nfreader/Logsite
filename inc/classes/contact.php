@@ -27,9 +27,11 @@ class contact {
     if ($type === 'C') {
       $data = "Contacted ".$name;
       $color = 'green';
+      $target->contactPlayer($player);
       $type = 'contacted';
     } elseif ($type === 'W') {
       $data = "Warned ".$name;
+      $target->warnPlayer($player);
       $color = 'yellow';
       $type = 'warned';
     } elseif (($type === 'B') && ($perma === true)) {

@@ -46,12 +46,22 @@ if(empty($_GET['report'])) {
     //print_r($comments);
 
     foreach ($comments as $comment) {
-      echo "<div class='panel panel-default'>";
+
+      $parser = new Logsite\parsedown();
+      if ($comment->guest == true) {
+        $parser->displayImages(false);
+      }
+      $body = htmlspecialchars($comment->comment);
+      $body = preg_replace("/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i","<p><iframe width=\"320\" height=\"270\" src=\"//www.youtube.com/embed/$1\" frameborder=\"0\" allowfullscreen></iframe></p>",$body);
+      $body = $parser->parse($body);
+
+      echo "<div class='panel panel-default' id=".$comment->id.">";
       echo "<div class='panel-heading'><h3 class='panel-title'>";
       echo "Comment from ".nameFormatter($comment->username)." ";
-      echo "<span class='rollover' data-toggle='tooltip' title='".$comment->timestamp."'>".relativeTime($comment->timestamp)."</span></h3></div>";
+      echo "<span class='rollover' data-toggle='tooltip' title='".$comment->timestamp."'>".relativeTime($comment->timestamp)."</span></h3>";
+      echo "<p class='pull-right'><a href='#".$comment->id."'>#".$comment->id."</a></p></div>";
       echo "<div class='panel-body'>";
-      echo $comment->comment;
+      echo $body;
       echo "</div></div>";
     }
   ?>
@@ -59,7 +69,7 @@ if(empty($_GET['report'])) {
   <div class='page-header'><h3>Leave a comment</h3></div>
   <form class="form" action="?action=viewReport&report=<?php echo $report->eventid;?>" method="POST">
     <div class='form-group'>
-    <label for='comment'>Comment</label>
+    <label for='comment'>Comment (You can use <a href="https://help.github.com/articles/github-flavored-markdown" target="_blank">Markdown</a>!)</label>
     <textarea class='form-control' name='comment' rows='10' placeholder='Comment' required></textarea>
     </div>
     <?php if ($report->public == true) {

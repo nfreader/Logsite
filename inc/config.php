@@ -16,7 +16,7 @@ define('TBL_PREFIX', 'ls_'); //Probably won't need to change unless you want two
 
 define('PASSWD_SALT_LENGTH',16); //Salt length for hashing passwords
 
-define('HIPCHAT_TOKEN','0f7f8082d9098293164b84c069e4c7');
+define('HIPCHAT_TOKEN','93f950ea19b7c22a638ea67d9144c2');
 define('HIPCHAT_ROOM','546806');
 
 error_reporting(-1);

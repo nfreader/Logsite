@@ -99,27 +99,33 @@ function eventTypeFormatter($type) {
   switch ($type) {
     default:
     $format['class'] = 'active';
-    $format['type'] = '';
+    $format['text'] = 'No status';
+    $format['type'] = icon('minus').''.$format['text'];
     break;
     
     case 'C':
     $format['class'] = 'success contacted';
-    $format['type'] = icon('bullhorn').' Contacted';
+    $format['text'] = 'Contacted';
+    $format['type'] = icon('bullhorn').''.$format['text'];
     break;
     
     case 'W':
     $format['class'] = 'warning warned';
-    $format['type'] = icon('warning-sign').' Warned';
+    $format['text'] = 'Warned';
+    $format['type'] = icon('warning-sign').''.$format['text'];
     break;
     
     case 'B':
     $format['class'] = 'danger banned';
-    $format['type'] = icon('minus-sign').' Banned';
+    $format['text'] = 'Banned';
+    $format['type'] = icon('minus-sign').''.$format['text'];
     break;
     
     case 'P':
     $format['class'] = 'permanent';
-    $format['type'] = icon('remove').' Permanently banned';
+    $format['text'] = 'Permanently banned';
+    $format['type'] = icon('remove').''.$format['text'];
+
     break;
   }
   return $format;

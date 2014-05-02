@@ -53,6 +53,7 @@
                   <li><a href="#"><?php echo icon('list-alt'); ?>Add new player and report</a></li>
                   <li><a href="?action=addReport"><?php echo icon('pencil'); ?>Add new report</a></li>
                   <li><a href="#"><?php echo icon('search'); ?>Find player</a></li>
+                  <li><a href="?action=listPlayers"><?php echo icon('list'); ?>List all players</a></li>
                   <li class="divider"></li>
                   <li>
                   <li role="presentation" class="dropdown-header"> 

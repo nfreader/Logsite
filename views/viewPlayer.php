@@ -125,7 +125,9 @@ if (isset($_GET['page'])) {
         echo "</div><div class='panel-footer'>";
         echo "<span class='rollover' data-toggle='tooltip'";
         echo "title='".$report->date."'>";
-        echo relativeTime($report->date)."</span>";
+        echo relativeTime($report->date)."</span> ";
+        echo "<a href='?action=viewReport&report=".$report->eventid."'>";
+        echo $report->comments. " ".singular($report->comments, 'comment', 'comments');
         echo "<p class='pull-right'>Event ID ";
         echo "<a href='?action=viewReport&report=".$report->eventid."'>#".$report->eventid."</a>";
         echo "</p></div></div>";

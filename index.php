@@ -48,6 +48,9 @@ if (isset($_GET['action'])) { //User is trying to log in
     if ($_GET['action'] === 'viewPlayer') {
       include 'views/viewPlayer.php';
     }
+    if ($_GET['action'] === 'listPlayers') {
+      include 'views/listPlayers.php';
+    }
     if ($_GET['action'] === 'logout') {
       session_destroy();
       echo "<div class='alert alert-success'>You have been logged out.
