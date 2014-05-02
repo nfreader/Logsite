@@ -1,0 +1,93 @@
+.label a {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.label a:hover {
+  text-decoration: none !important;
+  color: black;
+}
+
+label.alert {
+  width: 100%;
+  display: block;
+}
+
+.radio, .checkbox {
+  padding: 0;
+}
+
+.radio input[type=radio],.checkbox input[type=checkbox], {
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+.panel-footer {
+  background: white;
+}
+
+:target {
+  box-shadow: 0 0 8px #F00;
+}
+
+.clearfix() {
+  zoom: 1;
+  &:before { content: ''; display: block; }
+  &:after { content: ''; display: table; clear: both; }
+}
+
+.fingerprint {
+  .clearfix();
+  display: inline;
+  font-size: 125%;
+}
+
+.fingerprint span {
+  border-radius: 0px;
+  text-shadow: 0 0 1px black;
+  text-transform: uppercase;
+}
+
+.fingerprint span:last-child {
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
+}
+
+.fingerprint span:first-child {
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
+}
+
+.permanent td .glyphicon-remove,
+.banned td .glyphicon-minus-sign,
+.panel-permanent .glyphicon-remove,
+.panel-permanent .glyphicon-minus-sign{
+  color: rgb(216, 0, 0);
+}
+
+tr.permanent td,
+.progress-bar-permanent,
+.alert-permanent,
+.panel-permanent>.panel-heading {
+  background: #DFA1A1;
+}
+.panel-permanent>.panel-footer {
+  background: #f5f5f5;
+}
+
+
+.panel-permanent {
+  border-color: #ebccd1;
+}
+
+.label-permanent {
+  background: #E20000;
+}
+
+.center-block h1 .label {
+  display: block !important;
+}
+
+.label small {
+  color: white;
+}
