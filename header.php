@@ -45,6 +45,7 @@
           <a class="navbar-brand" href="index.php"><?php echo SITE_NAME; ?></a>
         </div>
         <div class="navbar-collapse collapse">
+        <?php if ($user->isLoggedIn()) { ?>
             <ul class="nav navbar-nav">
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Players <b class="caret"></b></a>
@@ -73,6 +74,11 @@
                 </ul>
               </li>
             </ul>
+            <?php }  else { ?>
+            <p class="navbar-text navbar-right">
+              <a href='appeal.php'>Check for appeals</a>
+            </p>
+            <?php } ?>
             <p class="navbar-text navbar-right">
             <?php 
             if ($user->isLoggedIn()) {

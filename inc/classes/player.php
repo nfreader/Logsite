@@ -83,7 +83,10 @@ class player {
   }
 
   public function getPlayer($player) {
-    $sql = "SELECT ls_players.*, ls_playermeta.* FROM ls_players LEFT JOIN ls_playermeta ON ls_players.id = ls_playermeta.player WHERE ls_players.id = :player";
+    $sql = "SELECT ls_players.*,
+(UNIX_TIMESTAMP(ls_players.expiration)-UNIX_TIMESTAMP(NOW())) as expiry
+FROM ls_players
+WHERE ls_players.id = :player";
     global $dbh;
     $data = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
     $data->execute(array(':player'=>$player));
@@ -219,6 +222,35 @@ class player {
     $listAll = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
     $listAll->execute();
     return $listAll->fetchAll();
+  }
+
+  public function getMetaByIP($IP) {
+    $sql = "SELECT sha1(ls_playermeta.value) AS IP,
+            ls_playermeta.player
+            FROM ls_playermeta
+            WHERE ls_playermeta.key = 'IP'
+            AND ls_playermeta.value = :IP";
+    global $dbh;
+    $meta = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+    $meta->execute(array(':IP'=>$IP));
+    return $meta->fetch();      
+  }
+
+  public function getAppealingReports($player) {
+    $sql = "SELECT
+            ls_reports.timestamp,
+            ls_reports.eventid,
+            CASE WHEN ls_reports.perma = 1
+                      THEN 'P'
+                      ELSE ls_reports.type END AS type
+            FROM ls_reports
+            LEFT JOIN ls_players ON ls_reports.player = ls_players.id
+            WHERE ls_reports.player = :player AND appeal = 1
+            ORDER BY ls_reports.timestamp DESC";
+    global $dbh;
+    $reports = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+    $reports->execute(array(':player'=>$player));
+    return $reports->fetchAll();   
   }
 
 }

@@ -5,10 +5,10 @@ namespace Logsite;
 use HipChat\HipChat as Hipchat;
 
 class contact {
-  public function newReport($player, $type, $notes, $perma) {
+  public function newReport($player, $type, $notes, $perma, $appeal) {
     $sql = "INSERT INTO ls_reports 
-    (player, type, notes, perma, user, timestamp, eventid)
-    VALUES (:player, :type, :notes, :perma, :user, NOW(), :eventid)";
+    (player, type, notes, perma, user, appeal, timestamp, eventid)
+    VALUES (:player, :type, :notes, :perma, :user, :appeal, NOW(), :eventid)";
     global $dbh;
     $time = time(); //If there's more than 1000ms of delay on this, the sha1
     //being used for the eventid will be invalid. That's bad.
@@ -19,6 +19,7 @@ class contact {
       ':type'=>$type,
       ':notes'=>$notes,
       ':perma'=>$perma,
+      ':appeal'=>$appeal,
       ':user'=>$_SESSION['userid'],
       ':eventid'=>$eventid
     ));
@@ -57,11 +58,11 @@ class contact {
     $data.= "Event ID: <a href='".$url."?action=viewReport&report=".$eventid."'>#";
     $data.= $eventid."</a>";
 
-    echo $data;
+    //echo $data;
 
     if (constant('HIPCHAT_TOKEN')) {
       $hc = new HipChat(HIPCHAT_TOKEN);
-      //$hc->message_room(HIPCHAT_ROOM, SITE_NAME, $data, true, $color);
+      $hc->message_room(HIPCHAT_ROOM, SITE_NAME, $data, true, $color);
     }
   }
 }

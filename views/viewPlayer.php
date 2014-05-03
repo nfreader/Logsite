@@ -9,7 +9,7 @@ if ((isset($_POST['contactType']))) {
 
   $contact = new Logsite\contact();
   $contact->newReport($_GET['player'],$_POST['contactType'],$_POST['notes'],
-  $perma);
+  $perma,$_POST['appeal']);
 }
 
 if (isset($_GET['player'])) {
@@ -56,10 +56,7 @@ if (isset($_GET['page'])) {
         case 'B':
           echo "<h1>
           <span class='label label-danger'>Banned<br>
-          <small>Expires in <span class='rollover' data-toggle='popover'
-          title='".$data->expiration."'>
-          ".relativeTime($data->expiration*1,'')."
-          </span></small></span></h1>";
+          <small>Expires: ".$data->expiration."</small></span></h1>";
           break;
         case 'W':
           echo "<h1>
@@ -127,7 +124,7 @@ if (isset($_GET['page'])) {
         echo "title='".$report->date."'>";
         echo relativeTime($report->date)."</span> ";
         echo "<a href='?action=viewReport&report=".$report->eventid."'>";
-        echo $report->comments. " ".singular($report->comments, 'comment', 'comments');
+        echo $report->comments. " ".singular($report->comments, 'comment', 'comments')."</a>";
         echo "<p class='pull-right'>Event ID ";
         echo "<a href='?action=viewReport&report=".$report->eventid."'>#".$report->eventid."</a>";
         echo "</p></div></div>";

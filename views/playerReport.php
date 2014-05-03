@@ -17,11 +17,20 @@
       <div class="radio">
         <label class='alert alert-danger'>
          <input type="radio" name="contactType" id="banned" value="B"/>
-         Banned
+         Banned 
         </label>
      </div>
+     <label class="alert alert-danger">
+      <input type="text" class="form-control" name="length" placeholder="Ban length (in seconds)" />
+     </label>
     <div class="checkbox">
       <label class='alert alert-danger'>
+        <input type="checkbox" value="1" name="appeal" id="appeal" disabled />
+          Player may appeal this ban
+      </label>
+    </div> 
+    <div class="checkbox">
+      <label class='alert alert-permanent'>
         <input type="checkbox" value="true" name="permanent" id="permanent" 
         disabled >
           This is a permanent ban
@@ -37,8 +46,10 @@
   $('#banned').click(function(){
     if($('#banned').is(':checked')) {
       $('#permanent').attr('disabled',false);
+      $('#appeal').attr('disabled',false);
     } else {
       $('#permanent').attr('disabled',true);
+      $('#appeal').attr('disabled',true);
     }
   });
   </script>      
