@@ -7,9 +7,15 @@ if ((isset($_POST['contactType']))) {
     $perma = true;
   }
 
+  if (empty($_POST['appeal'])) {
+    $appeal = false;
+  } elseif (isset($_POST['appeal'])) {
+    $appeal = true;
+  }
+
   $contact = new Logsite\contact();
   $contact->newReport($_GET['player'],$_POST['contactType'],$_POST['notes'],
-  $perma,$_POST['appeal']);
+  $perma, $appeal);
 }
 
 if (isset($_GET['player'])) {

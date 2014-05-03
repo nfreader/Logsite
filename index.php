@@ -37,7 +37,9 @@ if (isset($_GET['action'])) { //User is trying to log in
       include 'views/viewReports.php';
     }
     if ($_GET['action'] === 'viewReport') {
-      include 'views/viewReport.php';
+        if ($user->isLoggedIn || isset($_SESSION['player'])) {
+          include 'views/viewReport.php';
+      }
     }
     if ($_GET['action'] === 'newPlayer') {
       include 'views/newPlayerForm.php';

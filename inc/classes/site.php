@@ -158,6 +158,20 @@ class site {
     echo "<div class='alert alert-success'>Comment added.</div>";
   }
 
+  public function addReportCommentGuest($comment, $reportid) {
+    $sql = "INSERT INTO ls_reportcomments
+    (report, comment, guest, guestid, timestamp) VALUES
+    (:reportid, :comment, 1, :guestid, NOW())";
+    global $dbh;
+    $addComment = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+    $addComment->execute(array(
+      ':reportid'=>$reportid,
+      ':comment'=>$comment,
+      ':guestid'=>$_SESSION['player']
+    ));
+    echo "<div class='alert alert-success'>Comment added.</div>";
+  }
+
   public function getReportComments($reportid) {
     $sql = "SELECT ls_reportcomments.*,
             ls_user.username

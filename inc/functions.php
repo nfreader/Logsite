@@ -187,6 +187,8 @@ function renderComment($comment) {
   }
   $body = htmlspecialchars($comment->comment);
   $body = preg_replace("/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i","<p><iframe width=\"320\" height=\"270\" src=\"//www.youtube.com/embed/$1\" frameborder=\"0\" allowfullscreen></iframe></p>",$body);
+  $body = $string = preg_replace("+(\#\w{9})+", '<a href="?action=viewReport&report=$1">$1</a>', $body);
+  $body = str_replace('&report=#', '&report=', $body);
   $body = $parser->parse($body);
 
   echo "<div class='panel panel-default' id=".$comment->id.">";

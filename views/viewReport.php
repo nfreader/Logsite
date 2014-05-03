@@ -30,7 +30,7 @@ if(empty($_GET['report'])) {
   <div class='page-header'><h3>Leave a comment</h3></div>
   <form class="form" action="?action=viewReport&report=<?php echo $report->eventid;?>" method="POST">
     <div class='form-group'>
-    <label for='comment'>Comment (You can use <a href="https://help.github.com/articles/github-flavored-markdown" target="_blank">Markdown</a>! YouTube links will be automatically embedded!)</label>
+    <label for='comment'>Comment (You can use <a href="http://daringfireball.net/projects/markdown/syntax" target="_blank">Markdown</a> (and <a href="https://help.github.com/articles/github-flavored-markdown" target="_blank">GitHub flavored markdown</a>)! YouTube links will be automatically embedded!)</label>
     <textarea class='form-control' name='comment' rows='10' placeholder='Comment' required></textarea>
     </div>
     <?php if ($report->public == true) {
