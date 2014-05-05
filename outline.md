@@ -33,14 +33,17 @@
 		- Allow based on other meta 
  
 - User 
-	- Register 
+	- Register //Try that mail thing (we sent you an email with four passwords, use the second one)
 	- Log in 
 	- Log out 
- 
+	- Reset password
+
 - Admin 
 	- Approve user 
 	- Bulk add players 
 	- Set meta fields 
+	- Force password reset //And kill user session (DELETE FROM ls_session WHERE session_data LIKE '%nfreader%')
+	- Kill Button (DELETE * FROM ls_sessions) 
  
 - Site 
 	- Get site option 
