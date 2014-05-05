@@ -42,14 +42,14 @@ if (isset($_GET['action'])) { //User is trying to log in
     if ($_GET['action'] === 'newPlayer') {
       include 'views/newPlayerForm.php';
     }    
-    if ($_GET['action'] === 'addReport') {
-      include 'views/addReportForm.php';
-    }
     if ($_GET['action'] === 'viewReport') {
       include 'views/viewReport.php';
     }
     if ($_GET['action'] === 'viewPlayer') {
       include 'views/viewPlayer.php';
+    }
+    if ($_GET['action'] === 'findPlayer') {
+      include 'views/findPlayer.php';
     }
     if ($_GET['action'] === 'listPlayers') {
       include 'views/listPlayers.php';

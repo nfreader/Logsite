@@ -51,9 +51,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Players <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="?action=newPlayer"><?php echo icon('plus'); ?>Add new player</a></li>
-                  <li><a href="#"><?php echo icon('list-alt'); ?>Add new player and report</a></li>
-                  <li><a href="?action=addReport"><?php echo icon('pencil'); ?>Add new report</a></li>
-                  <li><a href="#"><?php echo icon('search'); ?>Find player</a></li>
+                  <li><a href="?action=findPlayer"><?php echo icon('search'); ?>Find player</a></li>
                   <li><a href="?action=listPlayers"><?php echo icon('list'); ?>List all players</a></li>
                   <li class="divider"></li>
                   <li>
@@ -68,8 +66,7 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="?action=addReport"><?php echo icon('pencil'); ?>Add new report</a></li>
-                  <li><a href="?action=viewReports"><?php echo icon('list'); ?>View all reports</a></li>
+                  <li><a href="?action=viewReports"><?php echo icon('list'); ?>List all reports</a></li>
                   <li><a href="#"><?php echo icon('search'); ?>Find report</a></li>
                 </ul>
               </li>

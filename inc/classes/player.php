@@ -253,4 +253,47 @@ WHERE ls_players.id = :player";
     return $reports->fetchAll();   
   }
 
+  public function searchPlayerMeta($key,$value) {
+    $sql = "SELECT ls_players.name,
+            ls_players.id,
+            ls_players.status,
+            SUM(IF(ls_reports.type = 'C', 1, 0)) AS contacted,
+            SUM(IF(ls_reports.type = 'W', 1, 0)) AS warned,
+            SUM(IF(ls_reports.type = 'B', 1, 0)) - (SUM(IF(ls_reports.perma = 1, 1, 0))) AS banned,
+            SUM(IF(ls_reports.perma = 1, 1, 0)) AS perma,
+            COUNT(ls_reports.type) AS reports,
+            ls_playermeta.key,
+            ls_playermeta.value
+            FROM ls_players
+            LEFT JOIN ls_reports ON ls_reports.player = ls_players.id
+            LEFT JOIN ls_playermeta ON ls_players.id = ls_playermeta.player
+            WHERE ls_playermeta.key LIKE '%".$key."%'
+            AND ls_playermeta.value LIKE '%".$value."%'
+            GROUP BY ls_players.id";
+    global $dbh;
+    $listAll = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+    $listAll->execute();
+    return $listAll->fetchAll();
+  }
+
+  public function searchByName($name) {
+    $sql = "SELECT ls_players.name,
+            ls_players.id,
+            ls_players.status,
+            SUM(IF(ls_reports.type = 'C', 1, 0)) AS contacted,
+            SUM(IF(ls_reports.type = 'W', 1, 0)) AS warned,
+            SUM(IF(ls_reports.type = 'B', 1, 0)) - (SUM(IF(ls_reports.perma = 1, 1, 0))) AS banned,
+            SUM(IF(ls_reports.perma = 1, 1, 0)) AS perma,
+            COUNT(ls_reports.type) AS reports
+            FROM ls_players
+            LEFT JOIN ls_reports ON ls_reports.player = ls_players.id
+            LEFT JOIN ls_playermeta ON ls_players.id = ls_playermeta.player
+            WHERE ls_players.name LIKE '%".$name."%'
+            GROUP BY ls_players.id";
+    global $dbh;
+    $listAll = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+    $listAll->execute();
+    return $listAll->fetchAll();
+  }
+
 }

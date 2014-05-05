@@ -107,6 +107,7 @@ class user {
           echo "<div class='alert alert-success'>You are now logged in as 
         ".$login->username.". <a href='index.php'>Continue</a></div>";
         }
+        return true;
       }
     }
   }

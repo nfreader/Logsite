@@ -166,4 +166,12 @@ class site {
     return $comments->fetchAll();
   }
 
+  public function getMetaKeys(){
+    $sql = "SELECT DISTINCT ls_playermeta.key FROM ls_playermeta";
+    global $dbh;
+    $meta = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+    $meta->execute();
+    return $meta->fetchAll(); 
+  }
+
 }
