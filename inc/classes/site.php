@@ -39,7 +39,7 @@ class site {
     ));
   }
 
-  public function viewReports($offset=0,$num=30) {
+  public function viewReports($offset=0,$num=30, $user) {
     $sql = "SELECT ls_reports.id,
             ls_reports.player AS playerid,
             ls_reports.notes,

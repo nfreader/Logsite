@@ -54,6 +54,13 @@ if (isset($_GET['action'])) { //User is trying to log in
     if ($_GET['action'] === 'listPlayers') {
       include 'views/listPlayers.php';
     }
+    if ($_GET['action'] === 'listUsers') {
+      include 'views/listUsers.php';
+    }
+    if ($_GET['action'] === 'activateUser' && isset($_GET['user'])) {
+      $user->activateUser($_GET['user']);
+      include 'views/home.php';
+    }
     if ($_GET['action'] === 'logout') {
       session_destroy();
       echo "<div class='alert alert-success'>You have been logged out.

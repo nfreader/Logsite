@@ -4,16 +4,22 @@ $limit = 30;
 $totalreports = $site->countRows('ls_reports');
 $pages = ceil($totalreports/$limit);
 
+if (isset($_GET['user'])) {
+  $user = $_GET['user'];
+} else {
+  $user = NULL;
+}
+
 if (isset($_GET['page'])) {
   $page = $_GET['page'];
   $offset = ($_GET['page']) * $limit;
   if ($offset == 0) {
     $offset = 0;
   }
-  $reports = $site->viewReports($offset,$limit);
+  $reports = $site->viewReports($offset,$limit, $user);
 } else {
   $page = 0;
-  $reports = $site->viewReports(0,$limit);
+  $reports = $site->viewReports(0,$limit, $user);
 }
 
 ?>

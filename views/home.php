@@ -1,13 +1,10 @@
 <div class="row">
   <div class="col-md-6">
 <?php
-$players = $player->countPlayers();
 $site = new Logsite\site();
+$players = $site->countRows('ls_players');
 $stats = $site->getSiteStats();
-$totalReports = 0;
-foreach ($stats as $stat) {
-  $totalReports = $totalReports + $stat->num;
-} ?>
+$totalReports = $site->countRows('ls_reports');?>
 <h2>
   <?php echo $totalReports." ".singular($totalReports,'report','reports')." for ". $players ." ". singular($players,'player','players');?> 
 </h2>
@@ -40,7 +37,7 @@ foreach ($stats as $stat) {
             <h2>Recent Reports</h2>
                <?php
                 $recent = 5;
-                $reports = $site->viewReports(0,$recent);
+                $reports = $site->viewReports(0,$recent,NULL);
                 reportTable($reports);
                 echo "<p>Showing ".$recent." of ".($totalReports);
                 echo " <a href='?action=viewReports'>View All</a></p>";

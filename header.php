@@ -73,6 +73,12 @@
                   <li><a href="#"><?php echo icon('search'); ?>Find report</a></li>
                 </ul>
               </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="?action=listUsers"><?php echo icon('user'); ?>List Users</a></li>
+                </ul>
+              </li>
             </ul>
             <?php }  else { ?>
             <p class="navbar-text navbar-right">
