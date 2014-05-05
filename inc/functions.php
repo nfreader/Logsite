@@ -193,7 +193,11 @@ function renderComment($comment) {
 
   echo "<div class='panel panel-default' id=".$comment->id.">";
   echo "<div class='panel-heading'><h3 class='panel-title'>";
-  echo "Comment from ".nameFormatter($comment->username)." ";
+  if ($comment->guest == false){
+    echo "Comment from ".nameFormatter($comment->username)." ";
+  } else {
+    echo "Guest <a href='?action=viewPlayer&player=".$comment->guestid."'>".$comment->username."</a> commented ";
+  }
   echo "<span class='rollover' data-toggle='tooltip' title='".$comment->timestamp."'>".relativeTime($comment->timestamp)."</span></h3>";
   echo "<p class='pull-right'><a href='#".$comment->id."'>#".$comment->id."</a></p></div>";
   echo "<div class='panel-body'>";
@@ -215,10 +219,12 @@ function renderReport($report) {
   echo "<p><em>The following note was attached:</em></p>";
   echo "<p>".$report->notes."</p>";
   echo "</div><div class='panel-footer'>";
-  if ($report->appeal == false) {
+  if ($report->appeal == false && $report->type == 'B' || $report->type == 'P') {
     echo "This ban may not be appealed.";
-  } elseif ($report->type == 'B' || $report->type =='P') {
+  } elseif ($report->type == 'B' || $report->type =='P' && $report->appeal == true) {
     echo "This ban may be appealed.";
+  } elseif ($report->public == true) {
+    echo "This report can be publicly viewed.";
   }
   echo "</div></div>";
 }

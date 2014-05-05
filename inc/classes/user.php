@@ -73,9 +73,10 @@ class user {
       ':username'=>$username
     ));
     $check = $check->fetch();
-    if ($check === array()) {
+    if ($check == array()) {
       echo "<div class='alert alert-danger'>Username or
       password invalid.</div>";
+      return false;
     } else {
       $sql = "SELECT id, username, email, rank FROM ls_user
       WHERE password = :password AND username = :username";
@@ -88,6 +89,7 @@ class user {
       if ($login === array()) {
         echo "<div class='alert alert-danger'>Username or
         password invalid.</div>";
+        return false;
       } else {
         echo "<div class='alert alert-success'>You are now logged in as 
         ".$login->username.". <a href='index.php'>Continue</a></div>";

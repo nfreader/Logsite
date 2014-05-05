@@ -39,32 +39,6 @@ class site {
     ));
   }
 
-  public function recentReports() {
-    $sql = "SELECT ls_reports.id,
-            ls_reports.player AS playerid,
-            ls_reports.notes,
-            ls_reports.perma,
-            ls_reports.user AS userid,
-            ls_reports.timestamp,
-            ls_reports.eventid,
-            ls_players.name AS player,
-            ls_user.username AS user,
-            ls_user.rank,
-            md5(ls_user.email) AS email,
-            CASE WHEN ls_reports.perma = 1
-              THEN 'P'
-              ELSE ls_reports.type END AS type
-            FROM ls_reports
-            LEFT JOIN ls_user ON ls_reports.user = ls_user.id
-            LEFT JOIN ls_players ON ls_reports.player = ls_players.id
-            ORDER BY ls_reports.timestamp DESC
-            LIMIT 0,5";
-    global $dbh;
-    $reports = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
-    $reports->execute();
-    return $reports->fetchAll();
-  }
-
   public function viewReports($offset=0,$num=30) {
     $sql = "SELECT ls_reports.id,
             ls_reports.player AS playerid,
@@ -158,26 +132,32 @@ class site {
     echo "<div class='alert alert-success'>Comment added.</div>";
   }
 
-  public function addReportCommentGuest($comment, $reportid) {
+  public function addReportCommentGuest($comment, $reportid, $ident) {
     $sql = "INSERT INTO ls_reportcomments
-    (report, comment, guest, guestid, timestamp) VALUES
-    (:reportid, :comment, 1, :guestid, NOW())";
+    (report, comment, guest, guestid, guestident, timestamp) VALUES
+    (:reportid, :comment, 1, :guestid, :guestident, NOW())";
     global $dbh;
     $addComment = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
     $addComment->execute(array(
       ':reportid'=>$reportid,
       ':comment'=>$comment,
-      ':guestid'=>$_SESSION['player']
+      ':guestid'=>$_SESSION['player'],
+      ':guestident'=>$ident
     ));
     echo "<div class='alert alert-success'>Comment added.</div>";
   }
 
   public function getReportComments($reportid) {
     $sql = "SELECT ls_reportcomments.*,
-            ls_user.username
+            CASE WHEN ls_reportcomments.guest != 0
+            THEN ls_players.name
+            ELSE ls_user.username
+            END AS username
             FROM ls_reportcomments
             LEFT JOIN ls_user ON ls_reportcomments.userid = ls_user.id
-            WHERE ls_reportcomments.report =  :reportid";
+            LEFT JOIN ls_players ON ls_reportcomments.guestid = ls_players.id
+            WHERE ls_reportcomments.report = :reportid
+            ORDER BY ls_reportcomments.timestamp ASC";
     global $dbh;
     $comments = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
     $comments->execute(array(

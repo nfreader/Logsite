@@ -16,12 +16,18 @@ if (isset($_GET['action'])) {
   if ($_GET['action'] === 'appealReport') {
     include 'views/appealReport.php';
   }
+  if ($_GET['action'] === 'viewReport') {
+      if ($user->isLoggedIn() || isset($_SESSION['player'])) {
+        include 'views/viewReport.php';
+    }
+  }
 } else {
 
   echo "<h1>".SITE_NAME." appeals</h1>";
   if ($meta) {
     echo "<div class='alert alert-success'>Your IP address is currently attached  to a player in our system.</div>";
       $_SESSION['player'] = $meta->player;
+      $_SESSION['IP'] = $meta->IP;
       $reports = $player->getAppealingReports($meta->player);
   } else {
     echo "<div class='alert alert-info'>Your IP address does not match a player in our system.</div>";
