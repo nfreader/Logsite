@@ -2,6 +2,8 @@
 
 namespace Logsite;
 
+use HipChat\HipChat as Hipchat;
+
 class user {
 
   public function isLoggedIn() {
@@ -56,19 +58,21 @@ class user {
       ));
       echo "<div class='alert alert-success'>You are now registered.
       <a href='index.php'>Please log in</a></div>";
-      $sql = "SELECT COUNT(*) AS count, id FROM ls_user";
-      $count = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
-      $count->execute();
-      $count = $count->fetch();
       if ($site->countRows('ls_user') == 1) {
         $this->makeAdmin($count->id);
         $this->activateUser($count->id);
+      }
+      if (HIPCHAT == true) {
+        $hc = new HipChat(HIPCHAT_TOKEN);
+        $url = SITE_URL."/index.php";
+        $hc->message_room(HIPCHAT_ROOM, SITE_NAME, "User <a href='".$url."?action=listUsers'>".$username."</a> has registered and requires activation.", true, 'gray');
       }
     } else {
       echo "<div class='alert alert-danger'>This username or
       email address is already in use.</div>";
     }
   }
+  
 
   public function logIn($username, $password) {
     $sql = "SELECT username, salt FROM ls_user WHERE username = :username";
@@ -161,19 +165,23 @@ public function getUserProfile($name=null,$id=null) {
     ));
   }
   public function activateUser($id) {
-    $sql = "UPDATE ls_user SET status = 1 WHERE id = :user";
-    global $dbh;
-    $approve = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
-    $approve->execute(array(
-      ':user'=>$id
-    ));
-    if ($id != $_SESSION['userid']) {
-      $sql = "DELETE FROM ls_session WHERE session_data LIKE '%:user%'";
+    if ($this->isAdmin()){
+      $sql = "UPDATE ls_user SET status = 1 WHERE id = :user";
+      global $dbh;
       $approve = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
       $approve->execute(array(
         ':user'=>$id
       ));
+      if ($id != $_SESSION['userid']) {
+        $sql = "DELETE FROM ls_session WHERE session_data LIKE '%:user%'";
+        $approve = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+        $approve->execute(array(
+          ':user'=>$id
+        ));
+      }
+      echo "<div class='alert alert-success'>User has been activated.</div>";
+    } else {
+      echo "<div class='alert alert-danger'>Users can only be activated by administrators.</div>";
     }
-    echo "<div class='alert alert-success'>User has been activated.</div>";
   }
 }

@@ -27,23 +27,23 @@ class contact {
     $name = $target->getName($player);
     if ($type === 'C') {
       $data = "Contacted ".$name;
-      $color = 'green';
+      $hccolor = 'green';
       $target->contactPlayer($player);
       $type = 'contacted';
     } elseif ($type === 'W') {
       $data = "Warned ".$name;
       $target->warnPlayer($player);
-      $color = 'yellow';
+      $hccolor = 'yellow';
       $type = 'warned';
     } elseif (($type === 'B') && ($perma === true)) {
       $data = "Permanently banned ".$name;
       $target->banPlayer($player, true);
-      $color = 'purple';
+      $hccolor = 'purple';
       $type = 'permanently banned';
     } elseif (($type === 'B') && ($perma === false)) {
       $data = "Banned ".$name;
       $target->banPlayer($player, false);
-      $color = 'red';
+      $hccolor = 'red';
       $type = 'banned';
     }
 
@@ -60,9 +60,9 @@ class contact {
 
     //echo $data;
 
-    if (constant('HIPCHAT_TOKEN')) {
+    if (HIPCHAT === true) {
       $hc = new HipChat(HIPCHAT_TOKEN);
-      $hc->message_room(HIPCHAT_ROOM, SITE_NAME, $data, true, $color);
+      $hc->message_room(HIPCHAT_ROOM, SITE_NAME, $data, true, $hccolor);
     }
   }
 }

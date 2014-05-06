@@ -1,4 +1,5 @@
 <?php
+$user = new Logsite\user();
 
 $users = $user->listUsers();
 
@@ -13,7 +14,12 @@ foreach ($users as $user) {
     break;
 
     case 0:
-    $status = 'Inactive (<a href="?action=activateUser&user='.$user->id.'">Activate?</a>)';
+      if ($_SESSION['rank']=== 'A') {
+        $status = 'Inactive (<a href="?action=activateUser&user='.$user->id.'">Activate?</a>)';
+      } else {
+        $status = "Inactive";
+      } 
+
     break;
   }
 

@@ -12,21 +12,40 @@ require_once('header.php');
 
 //echo showColors();
 
-$string = preg_replace("+(\#\w{9})+",'<a href="?action=viewReport&report=$1">$1</a>', "Tests auto-linking event IDs: #8ee5a1d84
-#b0bcbd1c7
-#4d31d3a0a
-#6917c2441
-#0ae74c8b8
-#f50bceeec
-#47bc39dbf
-#3cc79efc5
-#4f7a2c13d
-#466251356
-#ce2923962
-#1acdb6f49
-#7674336f0");
-$string = str_replace('&report=#', '&report=', $string);
-echo $string;
+
+
+$passwords = array();
+
+$i=0;
+while ($i < 6){
+  $words = array_rand($PGPWordList,5);
+  $sep = array_rand($greekAlphabet);
+  $passwords[$i] = $PGPWordList[$words[0]]."\\".$greekAlphabet[$sep]."/".$PGPWordList[$words[1]]."$".$PGPWordList[$words[2]]."@".$PGPWordList[$words[3]]."^".$PGPWordList[$words[4]];
+  $i++;
+}
+
+//print_r($passwords);
+
+$message = "<p><strong>".SITE_NAME."</strong> has automatically picked a password for you. One of the passwords below has been tied to your account. The website will tell you which one to use.";
+
+$i = 1;
+foreach ($passwords as $password) {
+  $message.= "<h1>Password ".$i."</h1>". "\r\n";
+  $message.= $password. "\r\n";
+  $i++;
+}
+
+echo $message;
+$to      = 'nick@nfreader.net';
+$subject = 'the subject';
+
+$headers = 'From: webmaster@example.com' . "\r\n" .
+    'Reply-To: webmaster@example.com' . "\r\n" .
+    'X-Mailer: PHP/' . phpversion();
+$headers .= 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+//mail($to, $subject, $message, $headers);
 
 // list rooms
 //foreach ($hc->get_rooms() as $room) {

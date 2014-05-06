@@ -48,6 +48,9 @@ if (isset($_GET['action'])) { //User is trying to log in
     if ($_GET['action'] === 'viewPlayer') {
       include 'views/viewPlayer.php';
     }
+    if ($_GET['action'] === 'viewUser') {
+      include 'views/viewUser.php';
+    }
     if ($_GET['action'] === 'findPlayer') {
       include 'views/findPlayer.php';
     }

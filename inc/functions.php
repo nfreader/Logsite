@@ -63,7 +63,7 @@ function nameFormatter($name) {
     break;
   }
   $profile = "<span class='label label-".$class."'>";
-  $profile.= "<a href='?viewProfile=".$user->id."'>";
+  $profile.= "<a href='?action=viewUser&user=".$user->id."'>";
   $profile.= $user->username;
   $profile.= "</a></span>";
   return $profile;
@@ -136,7 +136,7 @@ function icon($icon,$class='') {
 }
 
 function reportTable($reports) {
-  echo tableHeader(array('#','User','Type','Player','Time','Event ID'));
+  echo tableHeader(array('#','User','Type','Player','Time','Event ID','Comments'));
   if (!$reports) {
     echo "<tr><td colspan=6>No reports</td></tr>";
   }
@@ -157,6 +157,8 @@ function reportTable($reports) {
     echo relativeTime($report->timestamp)."</strong></span>";
     echo "</td><td>";
     echo "<a href='?action=viewReport&report=".$report->eventid."'>#".$report->eventid."</a>";
+    echo "</td><td>";
+    echo $report->comments;
     echo "</td></tr>";
   }
 echo "</tbody></table>"; 
@@ -222,9 +224,11 @@ function renderReport($report) {
   if ($report->appeal == false && $report->type == 'B' || $report->type == 'P') {
     echo "This ban may not be appealed.";
   } elseif ($report->type == 'B' || $report->type =='P' && $report->appeal == true) {
-    echo "This ban may be appealed.";
+    echo icon('flag')."This ban may be appealed.";
   } elseif ($report->public == true) {
-    echo "This report can be publicly viewed.";
+    echo icon('eye-open')."This report can be publicly viewed.";
+  } else {
+    echo icon('eye-close')."This report is private.";
   }
   echo "</div></div>";
 }
@@ -232,24 +236,29 @@ function renderReport($report) {
 function PlayerListTable($players) {
 
   echo tableHeader(array('Name','Status','Reports','Contacted','Warned','Banned', 'Perma'));
-
+if (!$players) {
+        echo "<tr><td colspan='8'>";
+        echo "<p class='text-muted'>No players</p></td></tr>";
+      } else {
   foreach ($players as $player) {
-    $format = eventTypeFormatter($player->status);
-    echo "<tr class='".$format['class']."'><td>";
-    echo "<a href='?action=viewPlayer&player=".$player->id."'>".$player->name;
-    echo "</a></td><td>";
-    echo $format['type'];
-    echo "</td><td>";
-    echo $player->reports;
-    echo "</td><td>";
-    echo $player->contacted;
-    echo "</td><td>";
-    echo $player->warned;
-    echo "</td><td>";
-    echo $player->banned;
-    echo "</td><td>";
-    echo $player->perma;
-    echo "</td></tr>";
+       
+      $format = eventTypeFormatter($player->status);
+      echo "<tr class='".$format['class']."'><td>";
+      echo "<a href='?action=viewPlayer&player=".$player->id."'>".$player->name;
+      echo "</a></td><td>";
+      echo $format['type'];
+      echo "</td><td>";
+      echo $player->reports;
+      echo "</td><td>";
+      echo $player->contacted;
+      echo "</td><td>";
+      echo $player->warned;
+      echo "</td><td>";
+      echo $player->banned;
+      echo "</td><td>";
+      echo $player->perma;
+      echo "</td></tr>";
+    }
   }
   echo "</tbody></table>";
 

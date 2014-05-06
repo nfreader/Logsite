@@ -84,9 +84,9 @@ class player {
 
   public function getPlayer($player) {
     $sql = "SELECT ls_players.*,
-(UNIX_TIMESTAMP(ls_players.expiration)-UNIX_TIMESTAMP(NOW())) as expiry
-FROM ls_players
-WHERE ls_players.id = :player";
+            (UNIX_TIMESTAMP(ls_players.expiration)-UNIX_TIMESTAMP(NOW())) as expiry
+            FROM ls_players
+            WHERE ls_players.id = :player";
     global $dbh;
     $data = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
     $data->execute(array(':player'=>$player));

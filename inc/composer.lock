@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "03260e4847c7d12350751b7db55f19ee",
+    "hash": "808fac64c7d5f0448b7a5babbfd4d4c6",
     "packages": [
         {
             "name": "hipchat/hipchat-php",

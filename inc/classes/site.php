@@ -53,10 +53,13 @@ class site {
             md5(ls_user.email) AS email,
             CASE WHEN ls_reports.perma = 1
               THEN 'P'
-              ELSE ls_reports.type END AS type
+              ELSE ls_reports.type END AS type, 
+              COUNT(ls_reportcomments.report) AS comments
             FROM ls_reports
             LEFT JOIN ls_user ON ls_reports.user = ls_user.id
             LEFT JOIN ls_players ON ls_reports.player = ls_players.id
+            LEFT JOIN ls_reportcomments ON ls_reports.eventid = ls_reportcomments.report
+            GROUP BY ls_reports.eventid 
             ORDER BY ls_reports.timestamp DESC
             LIMIT $offset,$num";
     global $dbh;
@@ -64,6 +67,38 @@ class site {
     $reports->execute();
     return $reports->fetchAll();
   }
+
+  public function viewReportsByUser($user) {
+    $sql = "SELECT ls_reports.id,
+            ls_reports.player AS playerid,
+            ls_reports.notes,
+            ls_reports.perma,
+            ls_reports.user AS userid,
+            ls_reports.timestamp,
+            ls_reports.eventid,
+            ls_players.name AS player,
+            ls_user.username,
+            ls_user.rank,
+            md5(ls_user.email) AS email,
+            CASE WHEN ls_reports.perma = 1
+              THEN 'P'
+              ELSE ls_reports.type END AS type, 
+              COUNT(ls_reportcomments.report) AS comments
+            FROM ls_reports
+            LEFT JOIN ls_user ON ls_reports.user = ls_user.id
+            LEFT JOIN ls_players ON ls_reports.player = ls_players.id
+            LEFT JOIN ls_reportcomments ON ls_reports.eventid = ls_reportcomments.report
+            WHERE ls_reports.user = :user
+            GROUP BY ls_reports.eventid 
+            ORDER BY ls_reports.timestamp DESC";
+    global $dbh;
+    $reports = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+    $reports->execute(array(
+      ':user'=>$user
+    ));
+    return $reports->fetchAll();
+  }
+
   public function viewReport($id) {
     $sql = "SELECT ls_reports.id,
             ls_reports.player AS playerid,

@@ -16,7 +16,7 @@ if (isset($_GET['page'])) {
   if ($offset == 0) {
     $offset = 0;
   }
-  $reports = $site->viewReports($offset,$limit, $user);
+  $reports = $site->viewReports($offset,$limit,$user);
 } else {
   $page = 0;
   $reports = $site->viewReports(0,$limit, $user);
