@@ -7,15 +7,19 @@ $users = $user->listUsers();
 
 echo tableHeader(array('ID','Name','Registered','Rank','Status','Reports'));
 
-foreach ($users as $user) {
-  switch ($user->status) {
+foreach ($users as $userlist) {
+  switch ($userlist->status) {
     case 1:
-    $status = 'Active';
+      if ($user->isAdmin() && $_SESSION['userid'] != $userlist->id) {
+        $status = 'Active (<a href="?action=deactivateUser&user='.$userlist->id.'">Deactivate?</a>)';
+      } else {
+        $status = "Active";
+      } 
     break;
 
     case 0:
-      if ($_SESSION['rank']=== 'A') {
-        $status = 'Inactive (<a href="?action=activateUser&user='.$user->id.'">Activate?</a>)';
+      if ($user->isAdmin()) {
+        $status = 'Inactive (<a href="?action=activateUser&user='.$userlist->id.'">Activate?</a>)';
       } else {
         $status = "Inactive";
       } 
@@ -23,7 +27,7 @@ foreach ($users as $user) {
     break;
   }
 
-  switch ($user->rank) {
+  switch ($userlist->rank) {
     case 'U':
     $rank = 'User';
     break;
@@ -34,17 +38,18 @@ foreach ($users as $user) {
   }
 
   echo "<tr><td>";
-  echo $user->id;
+  echo $userlist->id;
   echo "</td><td>";
-  echo $user->username;
+  echo "<a href='?action=viewUser&user=".$userlist->id."'>
+    ".$userlist->username."</a>";
   echo "</td><td>";
-  echo "<span class='rollover' data-toggle='tooltip' title='".$user->timestamp."'>".relativeTime($user->timestamp)."</span>";
+  echo "<span class='rollover' data-toggle='tooltip' title='".$userlist->timestamp."'>".relativeTime($userlist->timestamp)."</span>";
   echo "</td><td>";
   echo $rank;
   echo "</td><td>";
   echo $status;
   echo "</td><td>";
-  echo $user->reports;
+  echo $userlist->reports;
   echo "</td></tr>";
 }
 

@@ -126,7 +126,7 @@ public function getUserProfile($name=null,$id=null) {
         ':name'=>$name
       ));
       $user = $user->fetch();
-      return $user;
+      return $user->id;
     } elseif (isset($id)) { //Search by ID
       $sql = "SELECT * FROM ls_user WHERE id = :id LIMIT 0,1";
       global $dbh;
@@ -135,7 +135,7 @@ public function getUserProfile($name=null,$id=null) {
         ':id'=>$id
       ));
       $user = $user->fetch();
-      return $user;   
+      return $user->username;   
     }
   }
 
@@ -173,15 +173,35 @@ public function getUserProfile($name=null,$id=null) {
         ':user'=>$id
       ));
       if ($id != $_SESSION['userid']) {
-        $sql = "DELETE FROM ls_session WHERE session_data LIKE '%:user%'";
+        $name = $this->getUserProfile(NULL,$id);
+        $sql = "DELETE FROM ls_session WHERE session_data LIKE '%".$name."%'";
         $approve = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
-        $approve->execute(array(
-          ':user'=>$id
-        ));
+        $approve->execute();
       }
       echo "<div class='alert alert-success'>User has been activated.</div>";
     } else {
       echo "<div class='alert alert-danger'>Users can only be activated by administrators.</div>";
+    }
+  }
+  public function deactivateUser($id) {
+    if ($this->isAdmin()){
+      if ($id != $_SESSION['userid']) {
+        $sql = "UPDATE ls_user SET status = 0 WHERE id = :user";
+        global $dbh;
+        $approve = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+        $approve->execute(array(
+          ':user'=>$id
+        ));
+        $name = $this->getUserProfile(NULL,$id);
+        $sql = "DELETE FROM ls_session WHERE session_data LIKE '%".$name."%'";
+        $approve = $dbh->prepare(str_replace('ls_', TBL_PREFIX, $sql));
+        $approve->execute();
+        echo "<div class='alert alert-success'>User has been deactivated.</div>";
+      } else {
+        echo "<div class='alert alert-danger'>You cannot deactivate yourself.</div>";
+      }
+    } else {
+      echo "<div class='alert alert-danger'>Users can only be deactivated by administrators.</div>";
     }
   }
 }

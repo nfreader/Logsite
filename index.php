@@ -13,7 +13,11 @@ if (isset($_GET['action'])) { //User is trying to log in
     if (!$user->logIn($_POST['username'],$_POST['password'])){
       include 'views/guest.php';
     } else {
-      include 'views/home.php';
+      if ($_SESSION['status'] == false) {
+        include 'views/guest.php';
+      } else {
+        include 'views/home.php';
+      }
     }
   }
 
@@ -62,6 +66,10 @@ if (isset($_GET['action'])) { //User is trying to log in
     }
     if ($_GET['action'] === 'activateUser' && isset($_GET['user'])) {
       $user->activateUser($_GET['user']);
+      include 'views/home.php';
+    }
+    if ($_GET['action'] === 'deactivateUser' && isset($_GET['user'])) {
+      $user->deactivateUser($_GET['user']);
       include 'views/home.php';
     }
     if ($_GET['action'] === 'logout') {
