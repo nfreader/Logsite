@@ -17,11 +17,11 @@ define('TBL_PREFIX', 'ls_'); //Probably won't need to change unless you want two
 define('PASSWD_SALT_LENGTH',16); //Salt length for hashing passwords
 
 
-//HipChat notifications. Uncomment and replace with your own details
-//to enable notifications
-
-//define('HIPCHAT_TOKEN','XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-//define('HIPCHAT_ROOM','XXXXXX');
+//HipChat notifications. Set HIPCHAT to true and fill in your details to enable
+//notifications
+define('HIPCHAT',false);
+define('HIPCHAT_TOKEN','XXX');
+define('HIPCHAT_ROOM','XXX');
 
 //error_reporting(-1);
 //ini_set('error_reporting', -1);
